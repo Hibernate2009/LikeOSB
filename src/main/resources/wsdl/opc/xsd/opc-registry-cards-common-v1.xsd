@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.bssys.com/opc/registry/cards/service/common/v1" targetNamespace="http://schemas.bssys.com/opc/registry/cards/service/common/v1">
+	<xsd:element name="fault" type="tns:FaultType">
+		<xsd:annotation>
+			<xsd:documentation>Ошибка приложения</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:complexType name="FaultType">
+		<xsd:annotation>
+			<xsd:documentation>Описание ошибки</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="errorCode" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>Код ошибки</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="errorName" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>Краткое, программно-зависимое наименование ошибки</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="errorMessage" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Развернутое пояснение об ошибке, с возможным разъяснением о причинах ошибки и методах ее устранения</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="UUID">
+		<xsd:annotation>
+			<xsd:documentation>Универсальный уникальный идентификатор (UUID - Universally Unique Identifier) RFC 4122</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="36"/>
+			<xsd:pattern value="([0-9]|[a-f]|[A-F]){8}(-([0-9]|[a-f]|[A-F]){4})(-([0-9]|[a-f]|[A-F]){4})(-([0-9]|[a-f]|[A-F]){4})(-([0-9]|[a-f]|[A-F]){12})"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>

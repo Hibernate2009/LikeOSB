@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.bssys.com/opc/registry/cards/service/v1" xmlns:cmn="http://schemas.bssys.com/opc/registry/cards/service/common/v1" xmlns:orc-mess="http://schemas.bssys.com/opc/registry/cards/service/messages/v1" targetNamespace="http://schemas.bssys.com/opc/registry/cards/service/v1">
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://schemas.bssys.com/opc/registry/cards/service/v1">
+			<xsd:import namespace="http://schemas.bssys.com/opc/registry/cards/service/common/v1" schemaLocation="xsd/opc-registry-cards-common-v1.xsd"/>
+			<xsd:import namespace="http://schemas.bssys.com/opc/registry/cards/service/messages/v1" schemaLocation="xsd/opc-registry-cards-messages-v1.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="faultResponse">
+		<wsdl:part name="fault" element="cmn:fault"/>
+	</wsdl:message>
+	<wsdl:message name="storeRegistryCardsRequest">
+		<wsdl:part name="storeRegistryCardsRequest" element="orc-mess:storeRegistryCardsRequest"/>
+	</wsdl:message>
+	<wsdl:message name="storeRegistryCardsResponse">
+		<wsdl:part name="storeRegistryCardsResponse" element="orc-mess:storeRegistryCardsResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="RegistryCardsServiceInterface">
+		<wsdl:operation name="storeRegistryCards">
+			<wsdl:documentation>Загрузка реестра карт</wsdl:documentation>
+			<wsdl:input message="tns:storeRegistryCardsRequest"/>
+			<wsdl:output message="tns:storeRegistryCardsResponse"/>
+			<wsdl:fault name="fault" message="tns:faultResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="RegistryCardsServiceBinding" type="tns:RegistryCardsServiceInterface">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="storeRegistryCards">
+			<soap:operation soapAction="urn:storeRegistryCards" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="fault">
+				<soap:fault name="fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="RegistryCardsService">
+		<wsdl:port name="RegistryCardsServicePort" binding="tns:RegistryCardsServiceBinding">
+			<soap:address location="ENDPOINT_URL"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

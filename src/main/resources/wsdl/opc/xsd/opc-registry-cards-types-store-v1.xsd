@@ -1,0 +1,636 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:tns="http://schemas.bssys.com/opc/registry/cards/service/types/store/v1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:cmn="http://schemas.bssys.com/opc/registry/cards/service/common/v1" targetNamespace="http://schemas.bssys.com/opc/registry/cards/service/types/store/v1">
+	<xsd:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="xmldsig-core-schema.xsd"/>
+	<xsd:import namespace="http://schemas.bssys.com/opc/registry/cards/service/common/v1" schemaLocation="opc-registry-cards-common-v1.xsd"/>
+	<xsd:complexType name="StoreRegistryCardsRequestType">
+		<xsd:annotation>
+			<xsd:documentation>Запрос загрузки реестра карт</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="requestHeader" type="tns:HeaderRequestType">
+				<xsd:annotation>
+					<xsd:documentation>Заголовок запроса</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="records" type="tns:RecordListType">
+				<xsd:annotation>
+					<xsd:documentation>Загрузка реестра карт - список записей, блок размером 100 записей</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="StoreRegistryCardsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>Ответ на запрос загрузки реестра карт</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="responseHeader" type="tns:HeaderResponseType">
+				<xsd:annotation>
+					<xsd:documentation>Заголовок ответа</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="requestHeader" type="tns:HeaderRequestType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Заголовок запроса</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="responseResult" type="tns:ResponseResultType">
+				<xsd:annotation>
+					<xsd:documentation>Ответ на загрузку реестра карт</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ResponseResultType">
+		<xsd:annotation>
+			<xsd:documentation>Ответ на загрузку реестра карт</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="result" type="tns:ResultResponseType">
+				<xsd:annotation>
+					<xsd:documentation>Результат загрузки</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="recordResults" type="tns:RecordResultResponseType" minOccurs="0" maxOccurs="100">
+				<xsd:annotation>
+					<xsd:documentation>Ответ на загрузку реестра карт - список записей, блок размером 100 записей</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RecordListType">
+		<xsd:annotation>
+			<xsd:documentation>Загрузка реестра карт - список записей, блок размером 100 записей</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="record" type="tns:RecordType" maxOccurs="100"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="HeaderRequestType">
+		<xsd:annotation>
+			<xsd:documentation>Заголовок запроса</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="createDateTime">
+				<xsd:annotation>
+					<xsd:documentation>Дата и время создания запроса</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:dateTime"/>
+				</xsd:simpleType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="requestUUID" type="cmn:UUID" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Идентификатор запроса</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="HeaderResponseType">
+		<xsd:annotation>
+			<xsd:documentation>Заголовок ответа</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="createDateTime">
+				<xsd:annotation>
+					<xsd:documentation>Дата и время создания ответа</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:dateTime"/>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="sender" type="tns:InitiatorType">
+				<xsd:annotation>
+					<xsd:documentation>Отправитель</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="responseUUID" type="cmn:UUID" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Идентификатор ответа</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="InitiatorType">
+		<xsd:annotation>
+			<xsd:documentation>Отправитель</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="id">
+				<xsd:annotation>
+					<xsd:documentation>Идентификатор отправителя</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="1"/>
+						<xsd:maxLength value="35"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="shortName" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Краткое наименование отправителя</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="1"/>
+						<xsd:maxLength value="35"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RecordType">
+		<xsd:annotation>
+			<xsd:documentation>Сведения о записи</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="cardHolderIdentifiers" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>Идентификаторы держателя карты - список идентификаторов держателя карты</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="card" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>Идентификаторы карты</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="recordUUID" type="cmn:UUID" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Идентификатор записи</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="RecordResultResponseType">
+		<xsd:annotation>
+			<xsd:documentation>Сведения о записи ответа</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="recordResult" type="tns:ResultResponseType">
+				<xsd:annotation>
+					<xsd:documentation>Результат загрузки</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="recordUUID" type="cmn:UUID" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Идентификатор записи</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="CardHolderIdentifierListType">
+		<xsd:annotation>
+			<xsd:documentation>Идентификаторы держателя карты - список идентификаторов держателя карты</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="cardHolderIdentifier" type="tns:CardHolderIdentifierType" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CardHolderIdentifierType">
+		<xsd:annotation>
+			<xsd:documentation>Идентификатор держателя карты</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="cardHolderIdCode" type="tns:CardHolderIdCode">
+				<xsd:annotation>
+					<xsd:documentation>Тип идентификатора держателя карты</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="cardHolderIdValue">
+				<xsd:annotation>
+					<xsd:documentation>Значение идентификатора держателя карты</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="1"/>
+						<xsd:maxLength value="32"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="cardHolderIdName" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Наименование идентификатора держателя карты</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="1"/>
+						<xsd:maxLength value="255"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CardType">
+		<xsd:annotation>
+			<xsd:documentation>Идентификаторы карты</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="cardPlainData" type="tns:PlainCardDataType" minOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Данные банковской карты</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="cardIdentifiers" type="tns:CardIdentifierListType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Идентификаторы карты - список идентификаторов карты</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="cardApplications" type="tns:CardApplicationListType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Приложения карты - список приложений карты</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PlainCardDataType">
+		<xsd:annotation>
+			<xsd:documentation>Данные банковской карты</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="pan" minOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Primary Account Number (PAN) карты, или номер карты</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:pattern value="[0-9]{8,28}"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="expiryDate">
+				<xsd:annotation>
+					<xsd:documentation>Дата окончания действия карты (YYYYMM, где YYYY-год, MM - месяц)</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:gYearMonth"/>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="currency" default="RUB" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Буквенный код валюты ISO 4217, Школьные баллы - XSC, Социальные сертификаты - SOC. Если не указан, считается равным RUB (Российский рубль).</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:pattern value="[A-Z]{3}"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="cardSeqNumber" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Идентификатор карты в наборе карт с таким же номером карты (PAN)</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:pattern value="[0-9]{2,3}"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="effectiveDate" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Дата начала действия карты (YYYYMM, где YYYY-год, MM - месяц)</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:gYearMonth"/>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="holderName" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Фамилия и имя держателя карты</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="1"/>
+						<xsd:maxLength value="45"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="brand" type="tns:BrandCode" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Тип карты</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CardIdentifierListType">
+		<xsd:annotation>
+			<xsd:documentation>Идентификаторы карты - список идентификаторов карты</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="cardIdentifier" type="tns:CardIdentifierType" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CardIdentifierType">
+		<xsd:annotation>
+			<xsd:documentation>Идентификатор карты</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="cardIdCode" type="tns:CardIdCode">
+				<xsd:annotation>
+					<xsd:documentation>Тип идентификатора карты</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="cardIdValue">
+				<xsd:annotation>
+					<xsd:documentation>Значение идентификатора карты</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="1"/>
+						<xsd:maxLength value="32"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="cardIdName" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Наименование идентификатора карты</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="1"/>
+						<xsd:maxLength value="255"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CardApplicationListType">
+		<xsd:annotation>
+			<xsd:documentation>Приложения карты - список приложений карты</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="cardApplication" type="tns:CardApplicationType" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CardApplicationType">
+		<xsd:annotation>
+			<xsd:documentation>Приложение карты</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="appCode" type="tns:ApplicationCode">
+				<xsd:annotation>
+					<xsd:documentation>Тип приложения карты</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="appName" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Наименование приложения карты</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="255"/>
+						<xsd:minLength value="1"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="appIdentifier" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Идентификатор приложения карты</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="1"/>
+						<xsd:maxLength value="32"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ResultResponseType">
+		<xsd:annotation>
+			<xsd:documentation>Результат загрузки</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="resultCode">
+				<xsd:annotation>
+					<xsd:documentation>Код сообщения о результате загрузки</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="1"/>
+						<xsd:maxLength value="32"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="resultText" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Текст сообщения о результате загрузки</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="1"/>
+						<xsd:maxLength value="512"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="CardHolderIdCode">
+		<xsd:annotation>
+			<xsd:documentation>Тип идентификатора держателя карты</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="SNILS">
+				<xsd:annotation>
+					<xsd:documentation>СНИЛС</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="DSZN">
+				<xsd:annotation>
+					<xsd:documentation>Уникальный (личный) номер держателя СК в органах социальной защиты населения</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="OMS">
+				<xsd:annotation>
+					<xsd:documentation>Номер полиса ОМС</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SIN">
+				<xsd:annotation>
+					<xsd:documentation>Социальный идентификационный номер</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="OTHER">
+				<xsd:annotation>
+					<xsd:documentation>Другого типа</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="CardIdCode">
+		<xsd:annotation>
+			<xsd:documentation>Тип идентификатора карты</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="MUID">
+				<xsd:annotation>
+					<xsd:documentation>Номер бесконтактного модуля СК (Mifare UID)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="UECN">
+				<xsd:annotation>
+					<xsd:documentation>Номер УЭК</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MSCN">
+				<xsd:annotation>
+					<xsd:documentation>Номер СКМ</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MSCS">
+				<xsd:annotation>
+					<xsd:documentation>Номер серии СКМ</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="OTHER">
+				<xsd:annotation>
+					<xsd:documentation>Другого типа</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="ApplicationCode">
+		<xsd:annotation>
+			<xsd:documentation>Тип приложения карты</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="0">
+				<xsd:annotation>
+					<xsd:documentation>Указатель приложения карты</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation>Проезд в метрополитене</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2">
+				<xsd:annotation>
+					<xsd:documentation>Проезд по железной дороге</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="3">
+				<xsd:annotation>
+					<xsd:documentation>Проезд по железной дороге</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="4">
+				<xsd:annotation>
+					<xsd:documentation>Проезд на наземном транспорте</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="5">
+				<xsd:annotation>
+					<xsd:documentation>Социальная идентификация</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="6">
+				<xsd:annotation>
+					<xsd:documentation>Витальная информация</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="7">
+				<xsd:annotation>
+					<xsd:documentation>Социальный дисконт</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="8">
+				<xsd:annotation>
+					<xsd:documentation>Частное приложение (опция)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="9">
+				<xsd:annotation>
+					<xsd:documentation>Перечень категорий льгот (закрытый/медицинский)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="10">
+				<xsd:annotation>
+					<xsd:documentation>Перечень категорий льгот (открытый/социальный)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="11">
+				<xsd:annotation>
+					<xsd:documentation>Перечень категорий льгот (открытый/социальный)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="12">
+				<xsd:annotation>
+					<xsd:documentation>Перечень категорий льгот (открытый/социальный)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="13">
+				<xsd:annotation>
+					<xsd:documentation>ФИО, пол, дата рождения</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="14">
+				<xsd:annotation>
+					<xsd:documentation>ФИО, пол, дата рождения</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="15">
+				<xsd:annotation>
+					<xsd:documentation>Социальный номер, эмиссионные данные</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="BrandCode">
+		<xsd:annotation>
+			<xsd:documentation>Тип карты</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="AmEx">
+				<xsd:annotation>
+					<xsd:documentation>The American Express Company</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CarteBlanche">
+				<xsd:annotation>
+					<xsd:documentation>Carte Blanche</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CarteBancaire">
+				<xsd:annotation>
+					<xsd:documentation>Carte Bancaire</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="DinersClub">
+				<xsd:annotation>
+					<xsd:documentation>Diners Club International</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Discover">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[Dean Witter, Discover & Co]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Europay">
+				<xsd:annotation>
+					<xsd:documentation>(formerly Eurocheque International)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="JCB">
+				<xsd:annotation>
+					<xsd:documentation>JCB International</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MasterCard">
+				<xsd:annotation>
+					<xsd:documentation>MasterCard International</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="VISA">
+				<xsd:annotation>
+					<xsd:documentation>VISA USA or VISA International</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="OTHER">
+				<xsd:annotation>
+					<xsd:documentation>Другого типа</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>

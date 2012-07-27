@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:storeRegistryCardsRequest
+	xmlns:tns="http://schemas.bssys.com/opc/registry/cards/service/messages/v1"
+	xmlns:tns1="http://schemas.bssys.com/opc/registry/cards/service/types/store/v1"
+	xmlns:tns2="http://schemas.bssys.com/opc/registry/cards/service/common/v1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://schemas.bssys.com/opc/registry/cards/service/messages/v1 opc-registry-cards-messages-v1.xsd ">
+	<requestHeader requestUUID="1">
+		<createDateTime>2001-12-31T12:00:00</createDateTime>
+	</requestHeader>
+	<records>
+		<record recordUUID="1">
+			<cardHolderIdentifiers>cardHolderIdentifiers</cardHolderIdentifiers>
+			<card>card</card>
+		</record>
+		<record recordUUID="2">
+			<cardHolderIdentifiers>cardHolderIdentifiers</cardHolderIdentifiers>
+			<card>card</card>
+		</record>
+		<record recordUUID="3">
+			<cardHolderIdentifiers>cardHolderIdentifiers</cardHolderIdentifiers>
+			<card>card</card>
+		</record>
+	</records>
+</tns:storeRegistryCardsRequest>

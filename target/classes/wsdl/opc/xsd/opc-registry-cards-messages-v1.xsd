@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:tns="http://schemas.bssys.com/opc/registry/cards/service/messages/v1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:sts="http://schemas.bssys.com/opc/registry/cards/service/types/store/v1" targetNamespace="http://schemas.bssys.com/opc/registry/cards/service/messages/v1">
+	<xsd:import namespace="http://schemas.bssys.com/opc/registry/cards/service/types/store/v1" schemaLocation="opc-registry-cards-types-store-v1.xsd"/>
+	<xsd:element name="storeRegistryCardsRequest" type="sts:StoreRegistryCardsRequestType">
+		<xsd:annotation>
+			<xsd:documentation>Запрос загрузки реестра карт</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="storeRegistryCardsResponse" type="sts:StoreRegistryCardsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>Ответ на запрос загрузки реестра карт</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+</xsd:schema>
